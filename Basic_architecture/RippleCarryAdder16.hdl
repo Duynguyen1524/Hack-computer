@@ -1,0 +1,21 @@
+/**
+ * 16-bit ripple carry adder constructed using four 4-bit ripple-carry adders.
+ * Author: Naga Kandasamy
+ * Date created: July 9, 2020
+ * Date modified: September 12, 2021
+ * 
+ * Student name(s): Jean A. Garcia, Justin Nguyen
+ * Date modified: 
+ */
+
+ CHIP RippleCarryAdder16 {
+    IN x[16], y[16];    // 16-bit inputs
+    OUT z[16];          //  16-bit output
+
+    PARTS: 
+    // FIXME: provide your solution
+    RippleCarryAdder4(x = x[0..3], y= y[0..3], z = z[0..3],cout = cout1);
+    RippleCarryAdder4(x = x[4..7], y= y[4..7], cin = cout1, z = z[4..7],cout = cout2);
+    RippleCarryAdder4(x = x[8..11], y= y[8..11], cin = cout2, z = z[8..11],cout = cout3);
+    RippleCarryAdder4(x = x[12..15], y= y[12..15], cin = cout3, z = z[12..15]);
+}

@@ -1,0 +1,34 @@
+/**
+ * 16-bit carry-select adder constructed using four 4-bit ripple-carry adders.
+ * Author: Naga Kandasamy
+ * Date created: September 27, 2024
+ * 
+ * Student name(s): Jean A. Garcia, Justin Nguyen
+ * Date modified: 
+ */
+
+ CHIP CarrySelectAdder16 {
+    IN x[16], y[16];    // 16-bit inputs
+    OUT z[16];          // 16-bit output
+
+    // FIXME: provide your solution
+    RippleCarryAdder4(x = x[0..3], y = y[0..3], z = z[0..3], cout = temp1);
+
+    RippleCarryAdder4(x = x[4..7], y = y[4..7], cin = false, z = z0, cout = temp20);
+    RippleCarryAdder4(x = x[4..7], y = y[4..7], cin = true, z = z1, cout = temp21);
+
+    Mux4(a = z0, b = z1, sel = temp1, out = z[4..7]);
+    Mux(a = temp20, b = temp21, sel = temp1, out = temp2);
+
+    RippleCarryAdder4(x = x[8..11], y = y[8..11], cin = false, z = z30, cout = temp30);
+    RippleCarryAdder4(x = x[8..11], y = y[8..11], cin = true, z = z31, cout = temp31);
+
+    Mux4(a = z30, b = z31, sel = temp2, out = z[8..11]);
+    Mux(a = temp30, b = temp31, sel = temp2, out = temp3);
+
+    RippleCarryAdder4(x = x[12..15], y = y[12..15], cin = false, z = z40, cout = temp40);
+    RippleCarryAdder4(x = x[12..15], y = y[12..15], cin = true, z = z41, cout = temp41);
+
+    Mux4(a = z40, b = z41, sel = temp3, out = z[12..15]);
+}
+

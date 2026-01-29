@@ -1,0 +1,47 @@
+/**
+ * 16-bit carry-skip adder constructed using four 4-bit ripple-carry adders.
+ * Author: Naga Kandasamy
+ * Date created: September 27, 2024
+ * 
+ * Student name(s): Jean A. Garcia, Justin Nguyen
+ * Date modified: 
+ */
+
+ CHIP CarrySkipAdder16 {
+    IN x[16], y[16];    // 16-bit inputs
+    OUT z[16];          //  16-bit output
+
+    PARTS: 
+    // FIXME: provide your solution
+    RippleCarryAdder4(x = x[0..3], y = y[0..3], cin=false, z=z[0..3], cout=co1);
+    Or(a = x[0], b = y[0], out = p0);
+    Or(a = x[1], b = y[1], out = p1);
+    Or(a = x[2], b = y[2], out = p2);
+    Or(a = x[3], b = y[3], out = p3);
+    And(a = p0, b = p1, out = p01);
+    And(a = p2, b = p3, out = p23);
+    And(a = p01, b = p23, out = block1Propagate);
+    Mux(a = co1, b = false, sel = block1Propagate, out=c1);
+
+    RippleCarryAdder4(x=x[4..7], y=y[4..7], cin=c1, z=z[4..7], cout=co2);
+    Or(a = x[4], b = y[4], out = p4);
+    Or(a = x[5], b = y[5], out = p5);
+    Or(a = x[6], b = y[6], out = p6);
+    Or(a = x[7], b = y[7], out = p7);
+    And(a = p4, b = p5, out = p45);
+    And(a = p6, b = p7, out = p67);
+    And(a = p45, b = p67, out = block2Propagate);
+    Mux(a = co2, b = c1, sel = block2Propagate, out = c2);
+
+    RippleCarryAdder4(x=x[8..11], y=y[8..11], cin=c2, z=z[8..11], cout=co3);
+    Or(a=x[8], b=y[8], out=p8);
+    Or(a=x[9], b=y[9], out=p9);
+    Or(a=x[10], b=y[10], out=p10);
+    Or(a=x[11], b=y[11], out=p11);
+    And(a=p8, b=p9, out=p89);
+    And(a=p10, b=p11, out=p1011);
+    And(a=p89, b=p1011, out=block3Propagate);
+    Mux(a=co3, b=c2, sel=block3Propagate, out=c3);
+ 	
+    RippleCarryAdder4(x=x[12..15], y=y[12..15], cin=c3, z=z[12..15], cout=co4);
+}
